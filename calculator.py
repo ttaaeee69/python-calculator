@@ -3,25 +3,58 @@ class Calculator:
         return a + b
 
     def subtract(self, a, b):
-        return b - a
+        return a - b
 
     def multiply(self, a, b):
         result = 0
-        for i in range(b+1):
+        if (a < 0 and b < 0):
+            a = -a
+            b = -b
+        if (b < 0):
+            a , b = b , a
+            print(a,b)
+        for i in range(b):
             result = self.add(result, a)
         return result
 
     def divide(self, a, b):
         result = 0
-        while a > b:
+        if (b == 0):
+            return "Undefined"
+        elif (a < 0 and b < 0):
+            a = -a
+            b = -b
+        elif (a < 0):
+            a = -a
+            while a >= b:
+                a = self.subtract(a, b)
+                result += 1
+            return -result
+        while a >= b:
             a = self.subtract(a, b)
             result += 1
         return result
-    
+        
     def modulo(self, a, b):
-        while a <= b:
-            a = a-b
-        return a
+        if b == 0:
+            raise ValueError("The divisor b cannot be zero.")
+        
+        positive_a, positive_b = abs(a), abs(b)
+        remainder = positive_a
+
+        # Calculate the positive remainder
+        while remainder >= positive_b:
+            remainder = self.subtract(remainder, positive_b)
+
+        # Adjust remainder based on the sign of a and b
+        if a < 0:
+            remainder = self.subtract(positive_b, remainder)  # Make remainder positive for negative dividends
+        
+        # If the divisor is negative, the remainder should be negative
+        if b < 0:
+            remainder = -remainder
+
+        return remainder
 
 # Example usage:
 if __name__ == "__main__":
